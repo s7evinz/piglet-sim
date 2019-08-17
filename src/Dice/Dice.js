@@ -13,7 +13,6 @@ import d6 from './Dice-6-b.svg';
 // TODO: shaky animation
 function Dice(props) {
   const size = props.size || 64;
-  console.log('size:', size);
   const diceList = [d0, d1, d2, d3, d4, d5, d6];
   const i = props.value;
   return <img src={diceList[i]} alt={`Dice ${i}`} style={{ width: size }} />
