@@ -1,24 +1,23 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+// import logo from './logo.svg';
+// import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+      <section className="section">
+        <div className="container">
+          <h1 className="title">Piglet Sim</h1>
+          <h2 className="subtitle">What's the best strategy?</h2>
+        </div>
+      </section>
+      <footer className="footer">
+        <div className="content has-text-centered">
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          <strong>Made</strong> by <a href="https://slevin.im">Slevin Zhang</a>.
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        </div>
+      </footer>
     </div>
   );
 }
