@@ -1,23 +1,22 @@
 import React, { Component } from 'react';
-import { getRandomIntInclusive } from '../common';
+import { getRandomIntInclusive, sum } from '../common';
 import { GameView, StreakContainer, PlayActionBar } from './GameComponents';
+
+const cleanState = {
+  round: 0,
+  history: [],
+  diceValue: 4,
+  takeHome: false,
+};
 
 class Game extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      round: 0,
-      history: [],
-      diceValue: 4,
-    };
+    this.state = cleanState;
   }
 
   newGame() {
-    this.setState({
-      round: 0,
-      history: [],
-      diceValue: 4,
-    })
+    this.setState(cleanState);
   }
 
   isGameOver() {
@@ -28,6 +27,10 @@ class Game extends Component {
   inProgress() {
     const { round } = this.state;
     return round > 0;
+  }
+
+  hasWon() {
+    return this.state.takeHome;
   }
 
   rollDice() {
@@ -54,29 +57,46 @@ class Game extends Component {
   }
 
   handleTakeHome = () => {
-
+    this.setState({
+      takeHome: true,
+    });
   }
 
   render() {
-    const { history, diceValue } = this.state;
+    const { 
+      history,
+      diceValue,
+    } = this.state;
     const gameOver = this.isGameOver();
     const inProgress = this.inProgress();
+    const hasWon = this.hasWon();
+    const winSum = sum(history);
 
     return (
       <div>
         <GameView
-          history={history}
+          onRoll={this.handleRoll}
           value={diceValue}
           inProgress={inProgress}
+          hasWon={hasWon}
           gameOver={gameOver}
+          winSum={winSum}
         />
-        <StreakContainer history={history} />
+        <StreakContainer
+          winSum={winSum}
+          hasWon={hasWon}
+          gameOver={gameOver}
+          history={history}
+        />
         <PlayActionBar
           gameOver={gameOver}
           inProgress={inProgress}
+          hasWon={hasWon}
           onRoll={this.handleRoll}
+          onTakeHome={this.handleTakeHome}
           onNew={this.handleNew}
          />
+         <div className="ps-action-bar-padding"></div>
       </div>
     );
   }

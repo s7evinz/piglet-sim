@@ -28,7 +28,6 @@
   display: flex;
   flex-direction: column;
   padding: 1rem;
-  margin-bottom: 5rem;
 }
 
 .ps-sm-dice-container {
@@ -40,4 +39,8 @@
 
 .ps-small-dice {
   margin: 0.5rem 0.5rem 0;
+}
+
+.ps-action-bar-padding {
+  height: 128px;
 }

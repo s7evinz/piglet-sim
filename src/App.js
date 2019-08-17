@@ -1,5 +1,5 @@
 // https://create-react-app.dev/docs/importing-a-component
-import React, { Component } from 'react';
+import React from 'react';
 import Game from './Game/Game';
 import './App.css';
 
@@ -25,7 +25,8 @@ function TabNav(props) {
       <ul>
         <li className="is-active"><a>Play</a></li>
         <li><a>Simulate</a></li>
-        <li><a>Explanation</a></li>
+        <li><a>Explain</a></li>
+        <li><a>Leaderboard</a></li>
       </ul>
     </div>
   );
