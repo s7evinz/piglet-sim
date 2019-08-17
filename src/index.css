@@ -1,7 +1,23 @@
-.has-border {
-  border: 1px solid #23d160;
+.ps-container {
+  display: flex;
 }
 
-.has-border-children>div {
-  border: 1px solid #23d160;
+.ps-center {
+  justify-content: center;
+}
+
+.ps-space-around {
+  justify-content: space-around;
+}
+
+.ps-space-evenly {
+  justify-content: space-evenly;
+}
+
+.ps-flex-wrap {
+  flex-wrap: wrap;
+}
+
+.ps-flex-none {
+  flex: none;
 }
