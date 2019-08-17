@@ -54,9 +54,22 @@ class Game extends Component {
     };
   }
 
+  newGame() {
+    this.setState({
+      round: 0,
+      history: [],
+      diceValue: 4,
+    })
+  }
+
   isGameOver() {
     const { round, diceValue } = this.state;
-    return !round || round > 0 && diceValue === 1;
+    return round > 0 && diceValue === 1;
+  }
+
+  inProgress() {
+    const { round } = this.state;
+    return round > 0;
   }
 
   rollDice() {
@@ -64,7 +77,7 @@ class Game extends Component {
   }
 
   handleRoll = () => {
-    if (this.isGameOver) {
+    if (this.isGameOver()) {
       console.info('The game is over! Please start over.')
       return;
     }
@@ -78,26 +91,48 @@ class Game extends Component {
     });
   }
 
+  handleNew = () => {
+    this.newGame();
+  }
+
+  handleTakeHome = () => {
+
+  }
+
   render() {
     const { history, diceValue } = this.state;
+    const gameOver = this.isGameOver();
+    const inProgress = this.inProgress();
 
     return (
       <div>
-        <GameView history={history} value={diceValue} over={this.isGameOver()} />
+        <GameView
+          history={history}
+          value={diceValue}
+          inProgress={inProgress}
+          gameOver={gameOver}
+        />
         <StreakContainer />
-        <PlayActionBar />
+        <PlayActionBar
+          gameOver={gameOver}
+          inProgress={inProgress}
+          onRoll={this.handleRoll}
+          onNew={this.handleNew}
+         />
       </div>
     );
   }
 }
 
 function GameView(props) {
-  const { history, value, over } = props;
-  const winAmount = sum(history);
+  const { history, value, inProgress, gameOver } = props;
+  const winSum = sum(history);
+  const winAmount = gameOver ? 0 : winSum;
   const isAdd = value > 1;
+  const plusOrMinus = isAdd ? `+${value}` : `-${winSum}`;
   const addClassName = classNames({
     'ps-dice-addition': true,
-    'is-invisible': over,
+    'is-invisible': !inProgress,
     'has-text-primary': isAdd,
     'has-text-danger': !isAdd,
   });
@@ -105,7 +140,7 @@ function GameView(props) {
   return (
     <div className="ps-container ps-space-evenly has-text-centered">
       <div>
-        <h3 className={addClassName}>{(isAdd ? '+' : '-') + `${value}`}</h3>
+        <h3 className={addClassName}>{plusOrMinus}</h3>
         <Dice value={value} />
       </div>
       <div>
@@ -138,16 +173,18 @@ function StreakContainer(props) {
 }
 
 function PlayActionBar(props) {
+  const { gameOver, inProgress } = props;
+
   return (
     <div className="ps-container ps-center ps-action-bar">
       <div className="buttons ps-buttons-box">
-          <button className="button is-primary">
+          <button className="button is-primary" disabled={gameOver} onClick={props.onRoll}>
             <span roll="img" aria-label="Dice">&#x1F3B2;</span>&nbsp;Roll
           </button>
-          <button className="button is-warning">
+          <button className="button is-warning" disabled={gameOver}>
             <span roll="img" aria-label="Money bag">&#x1F4B0;</span>&nbsp;Take Home
           </button>
-          <button className="button is-light">
+          <button className="button is-light" disabled={!inProgress} onClick={props.onNew}>
             <span roll="img" aria-label="Restart">&#x1F504;</span>&nbsp;New
           </button>
       </div>
