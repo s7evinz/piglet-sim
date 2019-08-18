@@ -29,7 +29,7 @@ function GameView(props) {
         </div>
       </div>
       <div>
-        <h3 className="is-size-5 has-text-weight-semibold">Winning</h3>
+        <h3 className="is-size-5 has-text-weight-semibold">Winnings</h3>
         <p className="ps-win-amount" style={{color: winAmount ? '#f1c000' : '#A7A7A8'}}>
           ${winAmount}
         </p>
@@ -59,7 +59,7 @@ function StreakContainer(props) {
       <p className={showLoserMsg}>
         Oh no! <span roll="img" aria-label="see-no-evil monkey">&#x1F648;</span>&nbsp;
         <br/>
-        You've lost the potential <span className="has-text-danger">${winSum-1}</span> winning.
+        You've lost the potential <span className="has-text-danger">${winSum-1}</span> winnings.
       </p>
       <p>Streak: {streak}</p>
       <div className="ps-sm-dice-container">

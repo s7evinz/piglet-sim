@@ -1,57 +1,29 @@
 import React, { Component } from 'react';
+import SimActionBar from './SimActionBar';
+import SimForm from './SimForm';
+import Sim, { StratOnRollCount, StratOnWinnings } from './Sim';
 import './Simulator.css';
 
 class Simulator extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
-  }
-
-  renderForm() {
-    const simAmount = [
-      { n: 100, text: '100'},
-      { n: 1000, text: '1k'},
-      { n: 10000, text: '10k'},
-      { n: 100000, text: '100k'},
-      { n: 1000000, text: '1 million'},
-      { n: 10000000, text: '10 million'},
-      { n: 100000000, text: '100 million'},
-    ]
-    
-    return (
-      <form onSubmit={this.handleSubmit} className="ps-sim-form">
-        <div className="ps-inline-field ps-strat-field">
-          <label className="ps-inline-label">Simulate</label>
-          <div className="select">
-            <select>
-              {simAmount.map((amount, i) => {
-                return <option key={i}>{`${amount.text} times`}</option>
-              })}
-            </select>
-          </div>
-        </div>
-        <div className="ps-strat-field">
-          <div className="ps-inline-field">
-            <input type="radio" className="ps-strat-radio" name="A" />
-            <label className="ps-inline-label">
-              Strategy A
-            </label>
-            <input type="number" className="input ps-strat-input" placeholder="10" min="1" />
-          </div>
-          <p className="ps-strat-desc">Quit after tentative winnings are $n or greater.</p>
-        </div>
-        <div className="ps-strat-field">
-          <div className="ps-inline-field">
-            <input type="radio" className="ps-strat-radio" name="B" />
-            <label className="ps-inline-label">
-              Strategy B
-            </label>
-            <input type="number" className="input ps-strat-input" placeholder="5" min="1" />
-          </div>
-          <p className="ps-strat-desc">Quit after n successful rolls.</p>
-        </div>
-      </form>
-    );
+    this.strategyOptions = {
+      a: StratOnWinnings,
+      b: StratOnRollCount,
+    }
+    this.state = {
+      simAmount: 100,
+      activeStrat: 'stratA',
+      stratA: {
+        value: '',
+      },
+      stratB: {
+        value: '',
+      },
+    };
+    const strat = new StratOnRollCount(20);
+    this.sim = new Sim(10000, strat);
+    console.log('xx this.sim:', this.sim);
   }
 
   renderResult() {
@@ -87,16 +59,61 @@ class Simulator extends Component {
     );
   }
 
+  handlePlay = () => {
+    console.log('xx this.state:', this.state);
+    // this.sim.run();
+  }
+
+  handleStop = () => {
+    this.sim.stop();
+  }
+
+  handleAmountSelect = (e) => {
+    this.setState({simAmount: e.target.value});
+  }
+
+  handleStratSelect = (e) => {
+    this.setState({activeStrat: e.target.value});
+  }
+
+  handleStratValChange = (e) => {
+    console.log(e.target.value);
+    const { name, value } = e.target;
+    this.setState({
+      [name]: {
+        value: value,
+      }
+    });
+  }
+
   render() {
+    const { 
+      simAmount,
+      activeStrat,
+      stratA,
+      stratB,
+    } = this.state;
+    
     return (
-      <div className="ps-margin">
-        <div className="columns is-centered">
-          <div className="column is-two-thirds">
-            <progress className="progress is-info" value="1" max="100">45%</progress>
+      <div>
+        <div className="ps-margin">
+          <div className="columns is-centered">
+            <div className="column is-two-thirds">
+              <progress className="progress is-info" value="1" max="100">45%</progress>
+            </div>
           </div>
+          <SimForm
+            simAmount={simAmount}
+            activeStrat={activeStrat}
+            stratAVal={stratA.value}
+            stratBVal={stratB.value}
+            onSelectChange={this.handleAmountSelect}
+            onRadioChange={this.handleStratSelect}
+            onValueChange={this.handleStratValChange}
+          />
+          {/* {this.renderResult()} */}
         </div>
-        {/* {this.renderForm()} */}
-        {this.renderResult()}
+        <SimActionBar onPlay={this.handlePlay} onStop={this.handleStop} />
       </div>
     );
   }

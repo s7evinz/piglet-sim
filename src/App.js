@@ -27,7 +27,7 @@ class App extends Component {
         page = <Simulator />;
         break;
       case 2:
-        page = <p>Explanation</p>;
+        page = <Explain />;
         break;
       case 3:
         page = <p>Coming soon.</p>;
@@ -67,6 +67,22 @@ class App extends Component {
       </div>
     );
   }
+}
+
+function Explain(props) {
+  return (
+    <div className="ps-margin">
+      <div className="columns">
+        <div className="column content">
+          <h3>Game Rules</h3>
+          <p>You start with no money in the money bag, and on every turn you have two choices: quit and take home your winnings, or risk everything in the money bag and roll a die.</p>
+          <p>If the die lands on 1, you lose all the money in your money bag, but if the die lands on anything else, you add the value in dollars to your money bag..</p>
+          <h3>Strategy</h3>
+          <p>What would be the optimal strategy for making the most money on average?</p>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function TabNav(props) {
