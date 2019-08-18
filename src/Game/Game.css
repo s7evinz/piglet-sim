@@ -1,0 +1,39 @@
+.ps-action-bar {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  bottom: 1.2rem;
+}
+
+.ps-win-amount {
+  font-size: 4rem;
+  color: #A7A7A8;
+  font-weight: bold;
+  margin-top: -0.5rem;
+}
+
+.ps-dice-addition {
+  font-size: 2rem;
+  margin-top: -0.5rem;
+}
+
+.ps-streak-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.ps-sm-dice-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-top: 1rem;
+}
+
+.ps-small-dice {
+  margin: 0.5rem 0.5rem 0;
+}
+
+.ps-action-bar-padding {
+  height: 128px;
+}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { getRandomIntInclusive, sum } from '../common';
 import { GameView, StreakContainer, PlayActionBar } from './GameComponents';
+import './Game.css';
 
 const cleanState = {
   round: 0,

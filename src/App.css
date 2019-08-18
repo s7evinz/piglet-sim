@@ -1,3 +1,42 @@
+.ps-container {
+  display: flex;
+}
+
+.ps-margin {
+  margin: 1rem;
+}
+.ps-margin-bottom {
+  margin-bottom: 1rem;
+}
+
+.ps-center {
+  justify-content: center;
+}
+
+.ps-space-around {
+  justify-content: space-around;
+}
+
+.ps-space-evenly {
+  justify-content: space-evenly;
+}
+
+.ps-flex-wrap {
+  flex-wrap: wrap;
+}
+
+.ps-flex-none {
+  flex: none;
+}
+
+.ps-align-center {
+  align-items: center;
+}
+
+.ps-modal-background {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
 .ps-buttons-box {
   box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
   border-radius: 6px;
@@ -5,42 +44,12 @@
   background: white;
 }
 
-.ps-action-bar {
-  position: fixed;
-  width: 100%;
-  left: 0;
-  bottom: 1.2rem;
+.ps-inline-field {
+  display: flex;
+  align-items: center;
 }
 
-.ps-win-amount {
-  font-size: 4rem;
-  color: #A7A7A8;
+.ps-inline-label {
+  margin-right: 1rem;
   font-weight: bold;
-  margin-top: -0.5rem;
-}
-
-.ps-dice-addition {
-  font-size: 2rem;
-  margin-top: -0.5rem;
-}
-
-.ps-streak-container {
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
-}
-
-.ps-sm-dice-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding-top: 1rem;
-}
-
-.ps-small-dice {
-  margin: 0.5rem 0.5rem 0;
-}
-
-.ps-action-bar-padding {
-  height: 128px;
 }

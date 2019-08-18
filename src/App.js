@@ -1,6 +1,7 @@
 // https://create-react-app.dev/docs/importing-a-component
 import React, { Component } from 'react';
 import Game from './Game/Game';
+import Simulator from './Simulator/Simulator';
 import './App.css';
 import classNames from 'classnames';
 
@@ -8,7 +9,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tabIndex: 0,
+      tabIndex: 1,
     };
   }
 
@@ -23,7 +24,7 @@ class App extends Component {
     const { tabIndex } = this.state;
     switch (tabIndex) {
       case 1:
-        page = <p>Simulator</p>;
+        page = <Simulator />;
         break;
       case 2:
         page = <p>Explanation</p>;
