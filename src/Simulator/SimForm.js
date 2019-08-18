@@ -47,13 +47,10 @@ function SimForm(props) {
             name={stratAName}
             value={stratAVal}
             onChange={onValueChange}
-            type="number"
             className="input ps-strat-input"
-            placeholder="10"
-            min="1"
           />
         </div>
-        <p className="ps-strat-desc">Quit after tentative winnings are $n or greater.</p>
+        <p className="ps-strat-desc">Quit after tentative winnings are ${stratAVal} or greater.</p>
       </div>
       <div className="ps-strat-field">
         <div className="ps-inline-field">
@@ -66,13 +63,10 @@ function SimForm(props) {
             name={stratBName}
             value={stratBVal}
             onChange={onValueChange}
-            type="number"
             className="input ps-strat-input"
-            placeholder="5"
-            min="1"
           />
         </div>
-        <p className="ps-strat-desc">Quit after n successful rolls.</p>
+        <p className="ps-strat-desc">Quit after {stratBVal} successful rolls.</p>
       </div>
     </form>
   );

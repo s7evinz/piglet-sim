@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SimActionBar from './SimActionBar';
 import SimForm from './SimForm';
+import SimResult from './SimResult';
 import Sim, { StratOnRollCount, StratOnWinnings } from './Sim';
 import './Simulator.css';
 
@@ -15,11 +16,14 @@ class Simulator extends Component {
       simAmount: 100,
       activeStrat: 'stratA',
       stratA: {
-        value: '',
+        value: 10,
       },
       stratB: {
-        value: '',
+        value: 5,
       },
+      running: false,
+      paused: false,
+      completed: false,
     };
     const strat = new StratOnRollCount(20);
     this.sim = new Sim(10000, strat);
@@ -59,13 +63,35 @@ class Simulator extends Component {
     );
   }
 
-  handlePlay = () => {
-    console.log('xx this.state:', this.state);
+  handlePlayPause = () => {
+    const { paused } = this.state;
+    this.setState({
+      running: true,
+      paused: !paused,
+    })
     // this.sim.run();
+    setTimeout(() => {
+      this.setState({
+        completed: true
+      });
+    }, 1000);
+  }
+
+  _setNewSim() {
+    this.setState({
+      running: false,
+      paused: false,
+      completed: false,
+    });
   }
 
   handleStop = () => {
-    this.sim.stop();
+    this._setNewSim();
+    // this.sim.stop();
+  }
+
+  handleNew = () => {
+    this._setNewSim();
   }
 
   handleAmountSelect = (e) => {
@@ -77,11 +103,11 @@ class Simulator extends Component {
   }
 
   handleStratValChange = (e) => {
-    console.log(e.target.value);
     const { name, value } = e.target;
+    const n = Math.floor(Math.abs(value));
     this.setState({
       [name]: {
-        value: value,
+        value: n,
       }
     });
   }
@@ -92,31 +118,59 @@ class Simulator extends Component {
       activeStrat,
       stratA,
       stratB,
+      running,
+      paused,
+      completed,
     } = this.state;
+
+    const simForm = (
+      <SimForm
+        simAmount={simAmount}
+        activeStrat={activeStrat}
+        stratAVal={stratA.value}
+        stratBVal={stratB.value}
+        onSelectChange={this.handleAmountSelect}
+        onRadioChange={this.handleStratSelect}
+        onValueChange={this.handleStratValChange}
+      />
+    );
+
+    const simResult = (
+      <SimResult
+      />
+    );
     
     return (
       <div>
         <div className="ps-margin">
-          <div className="columns is-centered">
-            <div className="column is-two-thirds">
-              <progress className="progress is-info" value="1" max="100">45%</progress>
-            </div>
-          </div>
-          <SimForm
-            simAmount={simAmount}
-            activeStrat={activeStrat}
-            stratAVal={stratA.value}
-            stratBVal={stratB.value}
-            onSelectChange={this.handleAmountSelect}
-            onRadioChange={this.handleStratSelect}
-            onValueChange={this.handleStratValChange}
-          />
-          {/* {this.renderResult()} */}
+          <SimProgress />
+          {(running || paused || completed)
+            ? simResult
+            : simForm
+          }
         </div>
-        <SimActionBar onPlay={this.handlePlay} onStop={this.handleStop} />
+        <SimActionBar
+          running={running}
+          paused={paused}
+          completed={completed}
+          onPlay={this.handlePlayPause}
+          onStop={this.handleStop}
+          onNew={this.handleNew}
+         />
+        <div className="ps-action-bar-padding"></div>
       </div>
     );
   }
+}
+
+function SimProgress(props) {
+  return (
+    <div className="columns is-centered">
+      <div className="column is-two-thirds">
+        <progress className="progress is-info" value="1" max="100">45%</progress>
+      </div>
+    </div>
+  );
 }
 
 export default Simulator;

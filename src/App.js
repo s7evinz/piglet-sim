@@ -47,7 +47,7 @@ class App extends Component {
       'Play',
       'Simulate',
       'Explain',
-      'Leaderboard',
+      // 'Leaderboard', // would be too easy to hack
     ];
 
     return (
