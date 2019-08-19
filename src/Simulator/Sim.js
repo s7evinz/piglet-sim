@@ -66,7 +66,7 @@ class StratOnWinnings {
   play() {
     const game = new PigletGame();
     while (!game.over) {
-      if (game.money_bag > this.amount) {
+      if (game.money_bag >= this.amount) {
         game.takeHome();
         break;
       } else {
@@ -90,25 +90,33 @@ class Sim {
     this.timer = setInterval(() => {
       if (++this.counter <= this.simAmount) {
         // run the sim
-        const result = this.strategy.play().result;
-        const { winnings, streak } = result;
-        this.totalWinnings += winnings;
-        this.totalStreaks += streak;
-        this._setBestResults(winnings, streak);
-        this.onUpdate(this.counter, this.result.best);
+        this._runUpdate();
       } else {
-        clearInterval(this.timer);
-        const avgWinnings = this.totalWinnings / this.counter;
-        const avgStreaks = this.totalStreaks / this.counter;
-        this._setAvgResults(avgWinnings, avgStreaks);
-        this.onUpdate(
-          this.counter,
-          this.result.best,
-          this.result.avg,
-          true
-        );
+        this._runComplete();
       }
-    }, 10);
+    });
+  }
+
+  _runUpdate() {
+    const result = this.strategy.play().result;
+    const { winnings, streak } = result;
+    this.totalWinnings += winnings;
+    this.totalStreaks += streak;
+    this._setBestResults(winnings, streak);
+    this.onUpdate(this.counter, this.result.best);
+  }
+
+  _runComplete() {
+    clearInterval(this.timer);
+    const avgWinnings = this.totalWinnings / this.counter;
+    const avgStreaks = this.totalStreaks / this.counter;
+    this._setAvgResults(avgWinnings, avgStreaks);
+    this.onUpdate(
+      this.counter,
+      this.result.best,
+      this.result.avg,
+      true
+    );
   }
 
   pause() {

@@ -15,10 +15,10 @@ function SimForm(props) {
     { n: 100, text: '100'},
     { n: 1000, text: '1k'},
     { n: 10000, text: '10k'},
-    { n: 100000, text: '100k'},
-    { n: 1000000, text: '1 million'},
-    { n: 10000000, text: '10 million'},
-    { n: 100000000, text: '100 million'},
+    // { n: 100000, text: '100k'},
+    // { n: 1000000, text: '1 million'},
+    // { n: 10000000, text: '10 million'},
+    // { n: 100000000, text: '100 million'},
   ]
 
   const stratAName = 'stratA';
