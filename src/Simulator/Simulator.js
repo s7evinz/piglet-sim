@@ -9,8 +9,8 @@ class Simulator extends Component {
   constructor(props) {
     super(props);
     this.strategyOptions = {
-      a: StratOnWinnings,
-      b: StratOnRollCount,
+      stratA: StratOnWinnings,
+      stratB: StratOnRollCount,
     }
     this.state = {
       simAmount: 100,
@@ -24,70 +24,75 @@ class Simulator extends Component {
       running: false,
       paused: false,
       completed: false,
+      progressValue: 0,
+      // bestWinnings: 0,
+      // bestStreak: 0,
+      // avgWinnings: 0,
+      // avgStreak: 0,
     };
-    const strat = new StratOnRollCount(20);
-    this.sim = new Sim(10000, strat);
-    console.log('xx this.sim:', this.sim);
   }
 
-  renderResult() {
-    return (
-      <div>
-        <div className="ps-container ps-center">
-          <table className="table is-striped is-bordered">
-            <thead>
-              <tr>
-                <th className="has-text-info">Result</th>
-                <th>Streak</th>
-                <th>Winnings</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th>Avg.</th>
-                <td>8</td>
-                <td>$20</td>
-              </tr>
-              <tr>
-                <th>Best</th>
-                <td>19</td>
-                <td>$99</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <br />
-        <h3 className="is-size-5 has-text-weight-semibold">Chosen Strategy</h3>
-        <p>Quit after tentative winnings are $n or greater.</p>
-      </div>
-    );
+  onSimUpdate = (counter, best, avg, completed) => {
+    const { simAmount } = this.state;
+    const progressValue = (counter / simAmount) * 100;
+    this.setState({
+      progressValue: progressValue,
+      bestStreak: best.streak,
+      bestWinnings: best.winnings,
+    });
+    if (completed) {
+      this.setState({
+        avgStreak: avg.streak,
+        avgWinnings: avg.winnings,
+        running: false,
+        completed: true,
+      });
+    }
   }
 
   handlePlayPause = () => {
-    const { paused } = this.state;
-    this.setState({
-      running: true,
-      paused: !paused,
-    })
-    // this.sim.run();
-    setTimeout(() => {
+    // setup simulation for the first time Play is clicked
+    if (!this.simulation) {
+      const { activeStrat, simAmount } = this.state;
+      const chosenStrategy = this.strategyOptions[activeStrat];
+      const strategy = new chosenStrategy(this.state[activeStrat].value);
+      this.simulation = new Sim(simAmount, strategy, this.onSimUpdate);
+    }
+
+    const { running } = this.state;
+    if (!running) {
+      this.simulation.run();
       this.setState({
-        completed: true
+        running: true,
+        paused: false,
       });
-    }, 1000);
+    } else {
+      this.simulation.pause();
+      this.setState({
+        running: false,
+        paused: true,
+      });
+    }
   }
 
   _setNewSim() {
+    this.simulation = null;
     this.setState({
       running: false,
       paused: false,
       completed: false,
+      progressValue: 0,
     });
   }
 
   handleStop = () => {
+    if (!this.simulation) {
+      // "Stop" is disabled if there's no simulation
+      // aka !this.state.running
+      return;
+    }
+    this.simulation.stop();
     this._setNewSim();
-    // this.sim.stop();
   }
 
   handleNew = () => {
@@ -121,6 +126,7 @@ class Simulator extends Component {
       running,
       paused,
       completed,
+      progressValue,
     } = this.state;
 
     const simForm = (
@@ -143,15 +149,13 @@ class Simulator extends Component {
     return (
       <div>
         <div className="ps-margin">
-          <SimProgress />
+          <SimProgress value={progressValue} />
           {(running || paused || completed)
             ? simResult
-            : simForm
-          }
+            : simForm}
         </div>
         <SimActionBar
           running={running}
-          paused={paused}
           completed={completed}
           onPlay={this.handlePlayPause}
           onStop={this.handleStop}
@@ -167,7 +171,7 @@ function SimProgress(props) {
   return (
     <div className="columns is-centered">
       <div className="column is-two-thirds">
-        <progress className="progress is-info" value="1" max="100">45%</progress>
+        <progress className="progress is-info" value={props.value} max="100">45%</progress>
       </div>
     </div>
   );

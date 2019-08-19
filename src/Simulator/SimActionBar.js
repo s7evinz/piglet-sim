@@ -5,7 +5,6 @@ import classNames from 'classnames';
 function SimActionBar(props) {
   const {
     running,
-    paused,
     completed,
   } = props;
 
@@ -23,10 +22,16 @@ function SimActionBar(props) {
     </button>
   );
 
+  const playPauseClasses = classNames({
+    'button': true,
+    'is-primary': !running,
+    'is-warning': running && !completed,
+  });
+
   return (
     <div className="ps-container ps-center ps-action-bar">
       <div className="buttons ps-buttons-box">
-          <button className="button is-primary" onClick={props.onPlay} disabled={completed}>
+          <button className={playPauseClasses} onClick={props.onPlay} disabled={completed}>
             Run
             &nbsp;<span roll="img" aria-label="Play or pause">&#x23EF;</span>&nbsp;
             Pause
