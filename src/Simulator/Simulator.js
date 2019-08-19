@@ -3,6 +3,7 @@ import SimActionBar from './SimActionBar';
 import SimForm from './SimForm';
 import SimResult from './SimResult';
 import Sim, { StratOnRollCount, StratOnWinnings } from './Sim';
+import classNames from 'classnames';
 import './Simulator.css';
 
 class Simulator extends Component {
@@ -25,10 +26,6 @@ class Simulator extends Component {
       paused: false,
       completed: false,
       progressValue: 0,
-      // bestWinnings: 0,
-      // bestStreak: 0,
-      // avgWinnings: 0,
-      // avgStreak: 0,
     };
   }
 
@@ -127,6 +124,10 @@ class Simulator extends Component {
       paused,
       completed,
       progressValue,
+      avgStreak,
+      avgWinnings,
+      bestStreak,
+      bestWinnings,
     } = this.state;
 
     const simForm = (
@@ -143,19 +144,30 @@ class Simulator extends Component {
 
     const simResult = (
       <SimResult
+        activeStrat={activeStrat}
+        stratValue={this.state[activeStrat].value}
+        completed={completed}
+        avgStreak={avgStreak}
+        avgWinnings={avgWinnings}
+        bestStreak={bestStreak}
+        bestWinnings={bestWinnings}
       />
     );
     
     return (
       <div>
         <div className="ps-margin">
-          <SimProgress value={progressValue} />
+          <SimProgress
+            value={progressValue}
+            completed={completed}
+           />
           {(running || paused || completed)
             ? simResult
             : simForm}
         </div>
         <SimActionBar
           running={running}
+          paused={paused}
           completed={completed}
           onPlay={this.handlePlayPause}
           onStop={this.handleStop}
@@ -168,10 +180,17 @@ class Simulator extends Component {
 }
 
 function SimProgress(props) {
+  const { completed } = props;
+  const classes = classNames({
+    'progress': true,
+    'is-info': !completed,
+    'is-success': completed,
+  })
+  
   return (
     <div className="columns is-centered">
       <div className="column is-two-thirds">
-        <progress className="progress is-info" value={props.value} max="100">45%</progress>
+        <progress className={classes} value={props.value} max="100">45%</progress>
       </div>
     </div>
   );

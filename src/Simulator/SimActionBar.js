@@ -5,11 +5,15 @@ import classNames from 'classnames';
 function SimActionBar(props) {
   const {
     running,
+    paused,
     completed,
   } = props;
 
+  const inProgress = running || paused;
+
   const stopButton = (
-    <button className="button is-danger" onClick={props.onStop} disabled={!running}>
+    <button className="button is-danger" onClick={props.onStop}
+      disabled={!inProgress}>
       <span roll="img" aria-label="Stop">&#x23F9;</span>&nbsp;
       Stop
     </button>
@@ -31,7 +35,8 @@ function SimActionBar(props) {
   return (
     <div className="ps-container ps-center ps-action-bar">
       <div className="buttons ps-buttons-box">
-          <button className={playPauseClasses} onClick={props.onPlay} disabled={completed}>
+          <button className={playPauseClasses} onClick={props.onPlay}
+            disabled={completed}>
             Run
             &nbsp;<span roll="img" aria-label="Play or pause">&#x23EF;</span>&nbsp;
             Pause

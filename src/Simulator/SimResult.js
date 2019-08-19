@@ -1,10 +1,32 @@
 import React from 'react';
 
 function SimResult(props) {
+  const {
+    activeStrat,
+    stratValue,
+    completed,
+    avgStreak,
+    avgWinnings,
+    bestStreak,
+    bestWinnings,
+  } = props;
+
+  let roundedAvgStreak;
+  let roundedAvgWinnings;
+  if (completed) {
+    roundedAvgStreak = avgStreak.toFixed(2);
+    roundedAvgWinnings = avgWinnings.toFixed(2);
+  }
+
+  const chosenStrats = {
+    stratA: <p>Quit after tentative winnings are ${stratValue} or greater.</p>,
+    stratB: <p>Quit after {stratValue} successful rolls.</p>,
+  }
+
   return (
     <div>
       <div className="ps-container ps-center">
-        <table className="table is-striped is-bordered">
+        <table className="table is-bordered">
           <thead>
             <tr>
               <th className="has-text-info">Result</th>
@@ -15,20 +37,20 @@ function SimResult(props) {
           <tbody>
             <tr>
               <th>Avg.</th>
-              <td>8</td>
-              <td>$20</td>
+              <td>{roundedAvgStreak}</td>
+              <td>${roundedAvgWinnings}</td>
             </tr>
             <tr>
               <th>Best</th>
-              <td>19</td>
-              <td>$99</td>
+              <td>{bestStreak}</td>
+              <td>${bestWinnings}</td>
             </tr>
           </tbody>
         </table>
       </div>
       <br />
       <h3 className="is-size-5 has-text-weight-semibold">Chosen Strategy</h3>
-      <p>Quit after tentative winnings are $n or greater.</p>
+      {chosenStrats[activeStrat]}
     </div>
   );
 }
